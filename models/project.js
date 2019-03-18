@@ -1,24 +1,27 @@
 const mongoose = require('../config/database')
 const { Schema } = mongoose
 
-const cardSchema = new Schema({
+const defaultPhases = [
+  { title: 'Flowcharts', id: 1 },
+  { title: 'Wireframes', id: 2 },
+  { title: 'Prototype', id: 3 },
+  { title: 'Development', id: 4 },
+  { title: 'Test', id: 5 },
+  { title: 'Launch', id: 6 },
+]
+
+const tileSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-  // listId: { type: Schema.Types.ObjectId, ref: 'lists' },
-})
-
-const listSchema = new Schema({
-  title: { type: String, required: true },
-  cards: [cardSchema],
+  phaseId: { type: Number },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 })
 
 const projectSchema = new Schema({
   title: { type: String, required: true },
-  lists: [listSchema],
+  phases: { type: Array, default: defaultPhases },
+  tiles: [tileSchema],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 })
