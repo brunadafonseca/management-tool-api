@@ -1,13 +1,15 @@
 const express = require('express')
-const router = express()
+const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const port = 8000
+const projects = require('./routes')
 
-router
+app
   .use(cors())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
+  .use(projects)
   .use((req, res, next) => {
     const err = new Error('Not Found')
     err.status = 404
@@ -17,8 +19,8 @@ router
     res.status(err.status || 500)
     res.send({
       message: err.message,
-      error: router.get('env') === 'development' ? err : {}
+      error: app.get('env') === 'development' ? err : {}
     })
   })
 
-router.listen(port, () => console.log(`Listening on port ${port}!`))
+app.listen(port, () => console.log(`Listening on port ${port}!`))
